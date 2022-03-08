@@ -2,19 +2,20 @@ install.packages("rlang")
 install.packages("tidyverse")
 install.packages("dbplyr")
 install.packages("readxl")
+install.packages('Rcpp')
+library(Rcpp)
 library(tidyverse)
 library(readxl)
 library(dbplyr)
-sept_2018<-read.csv('particulars of first registered vehicles_september 2018.csv')
+library(lubridate)
+library(readxl)
+pv201809 <- read_excel("particulars for first registered vehicles (sep 2018).xls", 
+                        na = "-", skip = 2)
+View(pv201809)
+str(pv201809)
 
-#check data type
-str(sept_2018)
-sept_2018
+pv201801 <- read_excel("particulars for first registered vehicles (jan 2018).xls", 
+                       na = "-", skip = 0)
+pv201801$`Number of passenger seats`= day(pv201801$`Number of passenger seats`)
 
-#delete empty row
-sept_2018 <- sept_2018[-c(5087), ]
-
-#Cylinder Capacity remove comma and convert to number
-sept_2018$Cylinder.capacity.of.engine..c.c.. = as.numeric(gsub(",", "", sept_2018$Cylinder.capacity.of.engine..c.c..))
-#Convert Cyliner NA to 0 
-sept_2018$Cylinder.capacity.of.engine..c.c..[is.na(sept_2018$Cylinder.capacity.of.engine..c.c..)] = 0
+str(pv201801)
